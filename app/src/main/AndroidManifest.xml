@@ -11,7 +11,8 @@
         android:theme="@style/Theme.GCode">
         <activity
             android:name=".LoginActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">
