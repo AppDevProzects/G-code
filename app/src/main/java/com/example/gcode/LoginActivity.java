@@ -137,6 +137,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.SigninButton:
+                user=userName.getText().toString();
+                pass=password.getText().toString();
                 if (user.isEmpty()){
                     makeToast("Username can not be empty!");
                     break;
@@ -167,14 +169,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void initialise(){
         signIn=findViewById(R.id.SigninButton);
         mAuth=FirebaseAuth.getInstance();
+        userName=findViewById(R.id.emailLogin);
+        password=findViewById(R.id.passwordLogin);
         googleAuthRequest();
-        user=userName.getText().toString();
-        pass=password.getText().toString();
         signinGoogle=findViewById(R.id.ContinueWithGoogle);
     }
 
     public void makeToast(String s){
-        Toast.makeText(getApplicationContext(), "s", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), ""+s, Toast.LENGTH_SHORT).show();
     }
 
 

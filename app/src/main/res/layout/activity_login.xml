@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/lock" />
 
             <EditText
-                android:id="@+id/passwordText"
+                android:id="@+id/passwordLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
@@ -51,7 +51,8 @@
                 android:hint="Password"
                 android:inputType="textPersonName|textPassword"
                 android:minHeight="48dp"
-                android:paddingLeft="70dp" />
+                android:paddingLeft="70dp"
+                android:textSize="14sp" />
         </androidx.cardview.widget.CardView>
 
 
@@ -68,7 +69,7 @@
             android:shadowRadius="4"
             android:text="Welcome to G-Code"
             android:textColor="@color/primary"
-            android:textSize="27sp"
+            android:textSize="23sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +84,7 @@
             android:fontFamily="cursive"
             android:text="Built your own community and \ncode along with your friends"
             android:textColor="@color/primary"
-            android:textSize="25dp"
+            android:textSize="21dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -94,10 +95,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="25dp"
             android:text="Sign in"
             android:textColor="@color/primary"
-            android:textSize="30dp"
+            android:textSize="26dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -125,7 +126,7 @@
                 app:srcCompat="@drawable/profile" />
 
             <EditText
-                android:id="@+id/usernameText"
+                android:id="@+id/emailLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
@@ -146,8 +147,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
+            android:gravity="center_vertical"
             android:text="Forgot Password ?"
-            android:onClick="forgetPassword"
             android:textColor="@color/primary"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@+id/cardView2"
@@ -158,7 +159,7 @@
             android:id="@+id/SigninButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@color/primary"
             android:elevation="20dp"
             android:paddingLeft="80dp"
@@ -190,23 +191,31 @@
             android:id="@+id/ContinueWithGoogle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="12dp"
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/google"
             android:drawablePadding="10dp"
             android:elevation="10dp"
-            android:onClick="signIn"
             android:stateListAnimator="@android:animator/fade_out"
             android:text="Continue with Google"
             android:textAllCaps="false"
             android:textColor="@color/primary"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"
-            app:layout_constraintVertical_bias="0.516" />
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not Registerd Yet ? Register here"
+            android:textColor="#2572F3"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ContinueWithGoogle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
