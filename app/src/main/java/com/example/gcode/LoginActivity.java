@@ -1,50 +1,71 @@
 package com.example.gcode;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "Check Issue";
     FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private final int RC_SIGN_IN=1;
     EditText userName,password;
-    Button signIn;
-
+    Button signIn,signinGoogle;
+    String user,pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        signIn = findViewById(R.id.SigninButton);
-        mAuth=FirebaseAuth.getInstance();
-        googleAuthRequest();
+        initialise();
+        signIn.setOnClickListener(this);
+        signinGoogle.setOnClickListener(this);
 
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String user=userName.getText().toString();
-                String pass=password.getText().toString();
-
-
-
-            }
-        });
+//        signIn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String user=userName.getText().toString();
+//                String pass=password.getText().toString();
+//                mAuth.createUserWithEmailAndPassword(user,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()){
+//                            FirebaseUser user=mAuth.getCurrentUser();
+//                            Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
+//                            updateUI(user);
+//                        }
+//                        else{
+//                            Toast.makeText(LoginActivity.this, "Error! "+task.getException(), Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                });
+//            }
+//        });
 
 
     }
@@ -52,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+        FirebaseUser account = mAuth.getCurrentUser();
+        if (account!=null) updateUI(account);
     }
 
     private void googleAuthRequest() {
@@ -65,44 +86,108 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signIn(View view) {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
+
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-                handleSignInResult(task);
-            }catch (Exception e){
-
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
             }
+        }
+
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            updateUI(firebaseUser);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            updateUI(null);
+                        }
+                    }
+                });
+
+    }
+
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.SigninButton:
+                if (user.isEmpty()){
+                    makeToast("Username can not be empty!");
+                    break;
+                }
+                if (pass.isEmpty()){
+                    makeToast("Password can not be empty!");
+                    break;
+                }
+                mAuth.signInWithEmailAndPassword(user,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            makeToast("Login Successful !");
+                            updateUI(mAuth.getCurrentUser());
+                        }
+                        else{
+                            makeToast("Error! "+task.getException());
+                        }
+                    }
+                });
+            case R.id.ContinueWithGoogle:
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, RC_SIGN_IN);
 
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            updateUI(account);
-        } catch (ApiException e) {
-            updateUI(null);
-        }
+    public void initialise(){
+        signIn=findViewById(R.id.SigninButton);
+        mAuth=FirebaseAuth.getInstance();
+        googleAuthRequest();
+        user=userName.getText().toString();
+        pass=password.getText().toString();
+        signinGoogle=findViewById(R.id.ContinueWithGoogle);
     }
 
-    private void updateUI(GoogleSignInAccount user) {
+    public void makeToast(String s){
+        Toast.makeText(getApplicationContext(), "s", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void updateUI(FirebaseUser user) {
         Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
         String name=user.getDisplayName();
-        String lastname= user.getFamilyName();
         String email= user.getEmail();
         intent.putExtra("email",email);
         intent.putExtra("name",name);
-        intent.putExtra("lastname",lastname);
+        startActivity(intent);
     }
+
+
 //
 //    public void forgetPassword(View view) {
 //        Intent intent = new Intent(LoginActivity.this,)

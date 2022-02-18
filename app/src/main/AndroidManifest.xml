@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GCode">
         <activity
+            android:name=".register_Activity"
+            android:exported="true" />
+        <activity
             android:name=".ProfileActivity"
             android:exported="true" />
         <activity
