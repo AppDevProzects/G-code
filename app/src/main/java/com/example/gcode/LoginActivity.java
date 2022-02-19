@@ -9,15 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -136,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.SigninButton:
+            case R.id.registerButton:
                 user=userName.getText().toString();
                 pass=password.getText().toString();
                 if (user.isEmpty()){
@@ -167,10 +164,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void initialise(){
-        signIn=findViewById(R.id.SigninButton);
+        signIn=findViewById(R.id.registerButton);
         mAuth=FirebaseAuth.getInstance();
-        userName=findViewById(R.id.emailLogin);
-        password=findViewById(R.id.passwordLogin);
+        userName=findViewById(R.id.emailRegister);
+        password=findViewById(R.id.passwordRegister);
         googleAuthRequest();
         signinGoogle=findViewById(R.id.ContinueWithGoogle);
     }
@@ -187,6 +184,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra("email",email);
         intent.putExtra("name",name);
         startActivity(intent);
+    }
+
+    public void openRegister(View view) {
+        startActivity(new Intent(LoginActivity.this,register_Activity.class));
     }
 
 

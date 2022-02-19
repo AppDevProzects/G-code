@@ -92,16 +92,17 @@
                     app:srcCompat="@drawable/lock" />
 
                 <EditText
-                    android:id="@+id/passwordLogin"
+                    android:id="@+id/passwordRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
                     android:backgroundTint="#FFFFFF"
                     android:ems="10"
                     android:hint="Password"
-                    android:inputType="textPersonName|textPassword"
+                    android:inputType="textPassword"
                     android:minHeight="48dp"
-                    android:paddingLeft="70dp" />
+                    android:paddingLeft="70dp"
+                    android:textSize="14sp" />
             </androidx.cardview.widget.CardView>
 
 
@@ -128,7 +129,7 @@
                     app:srcCompat="@drawable/profile" />
 
                 <EditText
-                    android:id="@+id/emailLogin"
+                    android:id="@+id/emailRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
@@ -136,7 +137,7 @@
                     android:cursorVisible="true"
                     android:ems="10"
                     android:hint="Email"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textEmailAddress"
                     android:minHeight="48dp"
                     android:paddingLeft="70dp"
                     android:textColorHint="@android:color/darker_gray"
@@ -144,7 +145,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
-                android:id="@+id/SigninButton"
+                android:id="@+id/registerButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -173,7 +174,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/SigninButton" />
+                app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
             <Button
                 android:id="@+id/SignupGoogle"
@@ -198,6 +199,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:onClick="openLogin"
                 android:text="Already Registered ? Login here"
                 android:textColor="#3580FF"
                 app:layout_constraintEnd_toEndOf="parent"

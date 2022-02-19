@@ -42,7 +42,7 @@
                 app:srcCompat="@drawable/lock" />
 
             <EditText
-                android:id="@+id/passwordLogin"
+                android:id="@+id/passwordRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
@@ -84,7 +84,7 @@
             android:fontFamily="cursive"
             android:text="Built your own community and \ncode along with your friends"
             android:textColor="@color/primary"
-            android:textSize="21dp"
+            android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +98,7 @@
             android:layout_marginTop="25dp"
             android:text="Sign in"
             android:textColor="@color/primary"
-            android:textSize="26dp"
+            android:textSize="26sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -126,7 +126,7 @@
                 app:srcCompat="@drawable/profile" />
 
             <EditText
-                android:id="@+id/emailLogin"
+                android:id="@+id/emailRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center_vertical"
@@ -156,10 +156,10 @@
             tools:ignore="OnClick" />
 
         <Button
-            android:id="@+id/SigninButton"
+            android:id="@+id/registerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="@color/primary"
             android:elevation="20dp"
             android:paddingLeft="80dp"
@@ -179,19 +179,19 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:text="or"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/SigninButton" />
+            app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
         <Button
             android:id="@+id/ContinueWithGoogle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:backgroundTint="@color/white"
             android:drawableLeft="@drawable/google"
             android:drawablePadding="10dp"
@@ -209,8 +209,11 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:onClick="openRegister"
             android:text="Not Registerd Yet ? Register here"
             android:textColor="#2572F3"
+            android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
