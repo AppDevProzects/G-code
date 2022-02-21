@@ -23,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,6 +34,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText userName,password;
     Button signIn,signinGoogle;
     String user,pass;
+    User newuser;
+    FirebaseFirestore fstore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,29 +45,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initialise();
         signIn.setOnClickListener(this);
         signinGoogle.setOnClickListener(this);
-
-//        signIn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String user=userName.getText().toString();
-//                String pass=password.getText().toString();
-//                mAuth.createUserWithEmailAndPassword(user,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()){
-//                            FirebaseUser user=mAuth.getCurrentUser();
-//                            Toast.makeText(getApplicationContext(), "User Created", Toast.LENGTH_SHORT).show();
-//                            updateUI(user);
-//                        }
-//                        else{
-//                            Toast.makeText(LoginActivity.this, "Error! "+task.getException(), Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                });
-//            }
-//        });
-
-
     }
 
     @Override
@@ -125,10 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                     }
                 });
-
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -152,10 +129,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             updateUI(mAuth.getCurrentUser());
                         }
                         else{
-                            makeToast("Error! "+task.getException());
+                            makeToast("Error! "+task.getException().getMessage());
                         }
                     }
                 });
+                break;
             case R.id.ContinueWithGoogle:
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -170,6 +148,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         password=findViewById(R.id.passwordRegister);
         googleAuthRequest();
         signinGoogle=findViewById(R.id.ContinueWithGoogle);
+        fstore = FirebaseFirestore.getInstance();
     }
 
     public void makeToast(String s){

@@ -72,19 +72,34 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                             updateUI(user);
                         }
                         else{
-                            makeToast("Error "+task.getException());
+                            makeToast("Error!! "+task.getException().getMessage());
                         }
                     }
                 });
+                break;
             case R.id.SignupGoogle:
 
         }
     }
 
-    private void updateUI(FirebaseUser user) {
-//        Intent intent = new Intent(register_Activity.this,ProfileActivity.class);
-//        intent.putExtra("")
+    private void updateUIgoogle(FirebaseUser user) {
+        Intent intent = new Intent(register_Activity.this,GeneralInfo.class);
+        String name=user.getDisplayName();
+        String email= user.getEmail();
+        intent.putExtra("email",email);
+        intent.putExtra("name",name);
+        startActivity(intent);
     }
+
+    private void updateUI(FirebaseUser user) {
+        Intent intent = new Intent(register_Activity.this,GeneralInfo.class);
+        String namestr=name.getText().toString().trim();
+        String email= user.getEmail();
+        intent.putExtra("email",email);
+        intent.putExtra("name",namestr);
+        startActivity(intent);
+    }
+
 
     private void makeToast(String s) {
         Toast.makeText(register_Activity.this, ""+s, Toast.LENGTH_SHORT).show();
