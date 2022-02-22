@@ -63,6 +63,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                     makeToast("Password is Required! ");
                     break;
                 }
+                findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
                 fAuth.createUserWithEmailAndPassword(emailStr,passStr).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -72,6 +73,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
                             updateUI(user);
                         }
                         else{
+                            findViewById(R.id.progressBar).setVisibility(View.GONE);
                             makeToast("Error!! "+task.getException().getMessage());
                         }
                     }
