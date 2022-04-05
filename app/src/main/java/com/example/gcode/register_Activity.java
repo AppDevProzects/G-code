@@ -3,7 +3,9 @@ package com.example.gcode;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
     Button register,contGoogle;
     FirebaseAuth fAuth;
     EditText name,email,pass;
+    SharedPreferences sp ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
         intialise();
         register.setOnClickListener(this);
         contGoogle.setOnClickListener(this);
+        currentPosition(0);
     }
 
     private void intialise() {
@@ -99,11 +103,19 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
         String email= user.getEmail();
         intent.putExtra("email",email);
         intent.putExtra("name",namestr);
+        currentPosition(1);
         startActivity(intent);
     }
 
 
     private void makeToast(String s) {
         Toast.makeText(register_Activity.this, ""+s, Toast.LENGTH_SHORT).show();
+    }
+
+    void currentPosition(int val) {
+        SharedPreferences sharedPref = getSharedPreferences("application", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("Last_activity",val);
+        editor.apply();
     }
 }

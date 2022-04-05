@@ -4,14 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class GeneralInfo extends AppCompatActivity {
 
@@ -22,6 +32,8 @@ public class GeneralInfo extends AppCompatActivity {
     private EditText codeforceID,chefID,institute,place;
     private String name,email;
     private Button register;
+    String chefAPI = "https://g-code-server.herokuapp.com/codechef/";
+    String forceAPI = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +50,46 @@ public class GeneralInfo extends AppCompatActivity {
             }
         });
 
+        chefID.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    checkAPI(chefAPI+chefID.getText().toString(),chefID);
+                }
+            }
+        });
+        codeforceID.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus){
+                    checkAPI(chefAPI+v.toString(),codeforceID);
+                }
+            }
+        });
     }
 
+    private void checkAPI(String url,EditText editText) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("message").equals("Invalid Codechef ProfileId"))
+                                editText.setError("Invalid username");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        queue.add(jsonObjectRequest);
+    }
 
     public void initialise(){
         db = FirebaseFirestore.getInstance();

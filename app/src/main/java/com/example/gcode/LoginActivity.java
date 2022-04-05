@@ -62,9 +62,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mGoogleSignInClient = GoogleSignIn.getClient(this, gSignOp);
     }
 
-    public void signIn(View view) {
-
-    }
+//    public void signIn(View view) {
+//
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
