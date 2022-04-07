@@ -2,12 +2,16 @@ package com.example.gcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,8 +36,10 @@ public class GeneralInfo extends AppCompatActivity {
     private EditText codeforceID,chefID,institute,place;
     private String name,email;
     private Button register;
+    ProgressBar p1,p2;
+    ImageButton i1,i2;
     String chefAPI = "https://g-code-server.herokuapp.com/codechef/";
-    String forceAPI = "";
+    boolean chef=false,force=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,50 +50,39 @@ public class GeneralInfo extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean pos=setUser();
-                if (!pos) return;
-                db.collection("Users").document(user.getUserID()).set(user);
-                startActivity(new Intent(GeneralInfo.this,ProfileActivity.class));
+                if (!pos){
+                    chef=false;
+                }
             }
         });
 
-        chefID.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    checkAPI(chefAPI+chefID.getText().toString(),chefID);
-                }
-            }
-        });
-        codeforceID.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus){
-                    checkAPI(chefAPI+v.toString(),codeforceID);
-                }
-            }
-        });
     }
 
-    private void checkAPI(String url,EditText editText) {
+    private void checkChefAPI(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if (response.getString("message").equals("Invalid Codechef ProfileId"))
-                                editText.setError("Invalid username");
+                            if (response.getString("message").equals("Invalid Codechef ProfileId")){
+                                chefID.setError("Invalid username");
+                                findViewById(R.id.progress01).setVisibility(View.INVISIBLE);
+                            }
                         } catch (JSONException e) {
+                            findViewById(R.id.progress01).setVisibility(View.INVISIBLE);
+                            findViewById(R.id.checkButton01).setVisibility(View.VISIBLE);
+                            chef=true;
+                            func();
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        findViewById(R.id.progress01).setVisibility(View.INVISIBLE);
                     }
                 });
-
         queue.add(jsonObjectRequest);
     }
 
@@ -102,6 +97,10 @@ public class GeneralInfo extends AppCompatActivity {
         name = intent.getStringExtra("name");
         register = findViewById(R.id.registerButton);
         uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        p1= findViewById(R.id.progress01);
+        p2= findViewById(R.id.progressBar02);
+        i1=findViewById(R.id.checkButton01);
+        i2=findViewById(R.id.checkbutton02);
     }
 
     public boolean setUser(){
@@ -126,6 +125,9 @@ public class GeneralInfo extends AppCompatActivity {
 //            return false;
 //        }
 
+        findViewById(R.id.progress01).setVisibility(View.VISIBLE);
+        checkChefAPI(chefAPI+chefID.getText().toString());
+
         user.setChefID(ccid);
         user.setCodeforceID(cfid);
         user.setEmail(email);
@@ -137,6 +139,21 @@ public class GeneralInfo extends AppCompatActivity {
     }
 
     private void makeToast(String s) {
-        Toast.makeText(GeneralInfo.this, "s", Toast.LENGTH_SHORT).show();
+        Toast.makeText(GeneralInfo.this, ""+s, Toast.LENGTH_SHORT).show();
     }
+
+    void currentPosition(int val) {
+        SharedPreferences sharedPref = getSharedPreferences("application", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("Last_activity",val);
+        editor.apply();
+    }
+
+    void func(){
+        if(!chef || !force) return;
+        db.collection("Users").document(user.getUserID()).set(user);
+        currentPosition(2);
+        startActivity(new Intent(GeneralInfo.this,ProfileActivity.class));
+    }
+
 }
