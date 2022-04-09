@@ -32,7 +32,6 @@ public class analysis extends Fragment {
     String uID;
     FirebaseFirestore db;
     View view;
-
     public analysis ()
     {
 

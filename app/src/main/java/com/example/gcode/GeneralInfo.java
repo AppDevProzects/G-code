@@ -65,8 +65,8 @@ public class GeneralInfo extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            if (response.getString("message").equals("Invalid Codechef ProfileId")){
-                                chefID.setError("Invalid username");
+                            if (response.getString("status").equals("FAILED")){
+                                chefID.setError(response.getString("COMMENT"));
                                 findViewById(R.id.progress01).setVisibility(View.INVISIBLE);
                             }
                         } catch (JSONException e) {

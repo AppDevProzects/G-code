@@ -1,5 +1,7 @@
 package com.example.gcode;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,13 +31,13 @@ import org.json.JSONObject;
 public class chef_profile extends Fragment {
 
     FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
-    String userID;
+    String userID,userName;
     FirebaseFirestore fstore;
     View view;
-    TextView user_name,max_rating,curr_rating,total_problem,status,institute;
+    TextView max_rating,curr_rating,total_problem,status,institute;
+    Button user_name;
 
-    public chef_profile ()
-    {
+    public chef_profile () {
 
     }
 
@@ -48,13 +51,21 @@ public class chef_profile extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         User user = documentSnapshot.toObject(User.class);
                         if (user!=null){
-                            String userName = user.getChefID();
-                            user_name.setText(userName);
+                            userName = user.getChefID();
+                            user_name.setText(userName+"  >>");
                             updateUI(userName);
                         }
-
                     }
                 });
+
+        user_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://www.codechef.com/users/"+userName);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 
@@ -72,6 +83,9 @@ public class chef_profile extends Fragment {
                             total_problem.setText(response.getString("problems solved"));
                             status.setText(response.getString("stars"));
                             institute.setText(response.getString("institute"));
+                            max_rating.animate().translationY(0f).setDuration(200);
+                            curr_rating.animate().translationY(0f).setDuration(600);
+                            total_problem.animate().translationY(0f).setDuration(1000);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -91,7 +105,7 @@ public class chef_profile extends Fragment {
     public void initialise(){
         userID = fuser.getUid();
         fstore = FirebaseFirestore.getInstance();
-        user_name = view.findViewById(R.id.chef_username);
+        user_name = view.findViewById(R.id.force_username);
         max_rating = view.findViewById(R.id.max_rating);
         curr_rating = view.findViewById(R.id.current_rating);
         total_problem = view.findViewById(R.id.problem_solved);

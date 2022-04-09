@@ -41,8 +41,8 @@
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.cardview.widget.CardView>
 
-            <TextView
-                android:id="@+id/chef_username"
+            <Button
+                android:id="@+id/force_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -61,7 +61,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:elevation="8dp"
+            android:elevation="10dp"
             app:cardCornerRadius="6dp"
             app:cardElevation="6dp"
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
@@ -101,7 +101,8 @@
                         android:text="1456"
                         android:textColor="#FDFDFD"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:translationY="30dp" />
 
                 </LinearLayout>
 
@@ -129,7 +130,8 @@
                         android:text="1424"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:translationY="30dp" />
 
                 </LinearLayout>
 
@@ -157,7 +159,8 @@
                         android:text="504"
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:translationY="30dp" />
 
                 </LinearLayout>
 
@@ -169,18 +172,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:text="Status :- "
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
         <TextView
             android:id="@+id/starRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:text="4 ★ coder"
+            android:text="-"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/textView15"
@@ -194,7 +197,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:text="Institute :- "
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -205,13 +208,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Indian Institute Of Technology"
+            android:text="-"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView17"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView17"
             app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:text="Userinfo"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:text="Contribution :- "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="-"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toTopOf="@+id/textView14" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
