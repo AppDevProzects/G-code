@@ -25,36 +25,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences sp = getSharedPreferences("application",Context.MODE_PRIVATE);
         int val = sp.getInt("Last_activity",0);
 
-//        button = findViewById(R.id.button);
-//        profileButton = findViewById(R.id.profileButton);
-//        register = findViewById(R.id.register);
-//
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        profileButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this,ProfileActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        register.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(MainActivity.this,register_Activity.class));
-//            }
-//        });
+
         appLine = findViewById(R.id.appLine);
         Handler handler = new Handler();
         appLine.animate().alpha(1.0f).setDuration(2000);

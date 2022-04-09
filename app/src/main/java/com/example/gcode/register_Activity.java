@@ -95,6 +95,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
         intent.putExtra("email",email);
         intent.putExtra("name",name);
         startActivity(intent);
+        finish();
     }
 
     private void updateUI(FirebaseUser user) {
@@ -105,6 +106,7 @@ public class register_Activity extends AppCompatActivity implements View.OnClick
         intent.putExtra("name",namestr);
         currentPosition(1);
         startActivity(intent);
+        finish();
     }
 
 

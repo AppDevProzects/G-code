@@ -1,6 +1,7 @@
 package com.example.gcode;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -24,73 +27,45 @@ import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    Intent intent;
-    TextView userName,email,InstituteName;
     String uID;
-    //User user = new User();
     FirebaseFirestore db;
-    String apiresp= "";
+    TabLayout tabLayout ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        initialise();
-        apivolly();
-    }
+        tabLayout = findViewById(R.id.tabLayout);
 
-    public void initialise(){
-        uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        email = findViewById(R.id.email);
-        userName = findViewById(R.id.UsernameProfile);
-        InstituteName = findViewById(R.id.InstituteName);
-        db = FirebaseFirestore.getInstance();
-        db.collection("Users").document(uID).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User user = documentSnapshot.toObject(User.class);
-                        if (user!=null)
-                        updateUI(user);
-                    }
-                });
-    }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new analysis()).commit();
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if ( tab.getPosition() == 0)
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new analysis()).commit();
+                }
+                else if ( tab.getPosition() == 1 )
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new chef_profile()).commit();
+                }
+                else
+                {
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new force_profile()).commit();
+                }
+            }
 
-    void updateUI(User user){
-        userName.setText(user.getName());
-        email.setText(user.getEmail());
-        InstituteName.setText(user.getInstitute());
-    }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-    public void apivolly(){
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://g-code-server.herokuapp.com/codechef/";
+            }
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            apiresp = response.getString("");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("responce",apiresp);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("API Error",error.toString());
-                    }
-                });
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
 
-        queue.add(jsonObjectRequest);
-    }
-
-    public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(ProfileActivity.this,LoginActivity.class));
+            }
+        });
     }
 }
