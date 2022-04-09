@@ -1,5 +1,7 @@
 package com.example.gcode;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,7 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -78,14 +84,21 @@ public class chef_profile extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            max_rating.setText(response.getString("maxRating"));
-                            curr_rating.setText(response.getString("rating"));
-                            total_problem.setText(response.getString("problems solved"));
-                            status.setText(response.getString("stars"));
-                            institute.setText(response.getString("institute"));
-                            max_rating.animate().translationY(0f).setDuration(200);
-                            curr_rating.animate().translationY(0f).setDuration(600);
-                            total_problem.animate().translationY(0f).setDuration(1000);
+                            if(response.getString("status").equals("OK")){
+                                JSONObject result = (JSONObject) response.getJSONArray("result").get(0);
+                                max_rating.setText(result.getString("maxRating"));
+                                curr_rating.setText(result.getString("rating"));
+                                total_problem.setText(result.getString("problems solved"));
+                                status.setText(result.getString("stars"));
+                                institute.setText(result.getString("institute"));
+                                max_rating.animate().translationY(0f).setDuration(200);
+                                curr_rating.animate().translationY(0f).setDuration(600);
+                                total_problem.animate().translationY(0f).setDuration(1000);
+
+                            }else{
+                                Toast.makeText(view.getContext(), "Unable to Fetch data", Toast.LENGTH_SHORT).show();
+                            }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
